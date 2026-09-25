@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <title>Rosemа — учебный клиент</title>
+    <style>
+      body { font-family: sans-serif; max-width: 720px; margin: 24px auto; }
+      button, input { margin: 4px 0; padding: 6px 8px; }
+      #log { white-space: pre-wrap; background: #f4f4f4; padding: 12px; min-height: 80px; }
+    </style>
+  </head>
+  <body>
+    <h1>Rosemа</h1>
+    <p>Интеграция модулей дня 5: регистрация, контакты, профиль, сообщения, реакции.</p>
+    <div>
+      <input id="user" placeholder="username" value="rose_01" />
+      <input id="pass" placeholder="password" value="Pass1234" />
+      <button id="reg">Регистрация</button>
+      <button id="login">Вход</button>
+    </div>
+    <div>
+      <input id="contact" placeholder="контакт" value="artyukhin" />
+      <button id="addc">Добавить контакт</button>
+    </div>
+    <div>
+      <input id="about" placeholder="о себе" value="студент ИСП-43" />
+      <button id="prof">Сохранить профиль</button>
+    </div>
+    <div>
+      <input id="text" placeholder="сообщение" value="привет" />
+      <button id="send">Отправить</button>
+      <button id="like">Реакция like</button>
+    </div>
+    <pre id="log"></pre>
+    <script type="module">
+      import { createApp } from './src/app.js';
+      const app = createApp();
+      const log = document.getElementById('log');
+      let lastMessageId = null;
+      function dump(title, data) {
+        log.textContent = title + '\n' + JSON.stringify(data, null, 2) + '\n---\nlog: ' + app.log.join(', ');
+      }
+      document.getElementById('reg').onclick = () => {
+        dump('register', app.register({
+          username: user.value,
+          password: pass.value,
+          passwordConfirm: pass.value,
+        }));
+      };
+      document.getElementById('login').onclick = () => dump('login', app.login(user.value));
+      document.getElementById('addc').onclick = () => dump('contact', app.addContact({ username: contact.value }));
+      document.getElementById('prof').onclick = () => dump('profile', app.saveProfile({ about: about.value, displayName: user.value }));
+      document.getElementById('send').onclick = () => {
+        const res = app.send(text.value);
+        lastMessageId = res.message?.id;
+        dump('send', res);
+      };
+      document.getElementById('like').onclick = () => dump('react', app.react(lastMessageId, 'like'));
+    </script>
+  </body>
+</html>
