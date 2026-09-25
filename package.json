@@ -1,0 +1,11 @@
+{
+  "name": "rosema",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Учебный мессенджер Rosemа",
+  "scripts": {
+    "test": "node --test tests/*.test.js",
+    "lint": "eslint src tests"
+  }
+}

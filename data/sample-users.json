@@ -1,0 +1,11 @@
+{
+  "takenUsernames": ["taken_user", "admin", "rosema"],
+  "limits": {
+    "usernameMin": 4,
+    "usernameMax": 20,
+    "passwordMin": 8,
+    "passwordMax": 20,
+    "groupMaxMembers": 50,
+    "maxUploadMb": 15
+  }
+}
