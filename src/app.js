@@ -9,6 +9,20 @@ import { addContact, listContacts } from './contacts/contacts.js';
 import { updateProfile, getProfile } from './profile/profile.js';
 import { sendMessage } from './chat/sendMessage.js';
 import { addReaction, listReactions } from './chat/reactions.js';
+import { AuthError, RosemaError, ValidationError } from './core/exceptions.js';
+
+const SCREENS = ['register', 'login', 'contacts', 'profile', 'chat'];
+
+function guard(action) {
+  try {
+    return action();
+  } catch (error) {
+    if (error instanceof RosemaError) {
+      return { ok: false, error: { code: error.code, message: error.message } };
+    }
+    return { ok: false, error: { code: 'UNKNOWN', message: 'Произошла неизвестная ошибка' } };
+  }
+}
 
 export function createApp() {
   const bus = createEventBus();
@@ -22,86 +36,80 @@ export function createApp() {
   function requireUser() {
     const session = currentSession();
     if (!session) {
-      return { ok: false, error: { code: 'NOT_AUTHORIZED' } };
+      throw new AuthError('Войдите, чтобы продолжить');
     }
-    return { ok: true, session };
+    return session;
   }
 
   return {
     bus,
     log,
+    screens: SCREENS,
     register(input) {
-      const result = registerAccount(input);
-      if (result.ok) {
-        bus.emit('user:registered', result.user);
-      }
-      return result;
+      return guard(() => {
+        if (!input?.username) {
+          throw new ValidationError('Укажите имя пользователя');
+        }
+        const result = registerAccount(input);
+        if (result.ok) {
+          bus.emit('user:registered', result.user);
+          bus.emit('screen', 'chat');
+        }
+        return result;
+      });
     },
     login(username) {
-      const result = login(username);
-      if (result.ok) {
-        bus.emit('user:login', result.user);
-      }
-      return result;
+      return guard(() => {
+        const result = login(username);
+        if (result.ok) {
+          bus.emit('user:login', result.user);
+          bus.emit('screen', 'chat');
+        }
+        return result;
+      });
     },
     addContact(contact) {
-      const auth = requireUser();
-      if (!auth.ok) {
-        return auth;
-      }
-      const result = addContact(auth.session.userId, contact);
-      if (result.ok) {
-        bus.emit('contact:added', result.contact);
-      }
-      return result;
+      return guard(() => {
+        const session = requireUser();
+        const result = addContact(session.userId, contact);
+        if (result.ok) {
+          bus.emit('contact:added', result.contact);
+        }
+        return result;
+      });
     },
     listContacts() {
-      const auth = requireUser();
-      if (!auth.ok) {
-        return [];
-      }
-      return listContacts(auth.session.userId);
+      return guard(() => listContacts(requireUser().userId));
     },
     saveProfile(patch) {
-      const auth = requireUser();
-      if (!auth.ok) {
-        return auth;
-      }
-      const result = updateProfile(auth.session.userId, patch);
-      if (result.ok) {
-        bus.emit('profile:updated', result.profile);
-      }
-      return result;
+      return guard(() => {
+        const session = requireUser();
+        const result = updateProfile(session.userId, patch);
+        if (result.ok) {
+          bus.emit('profile:updated', result.profile);
+        }
+        return result;
+      });
     },
     send(text, chatId = 'c_demo') {
-      const auth = requireUser();
-      if (!auth.ok) {
-        return auth;
-      }
-      const result = sendMessage({
-        chatId,
-        authorId: auth.session.userId,
-        text,
+      return guard(() => {
+        const session = requireUser();
+        const result = sendMessage({ chatId, authorId: session.userId, text });
+        if (result.ok) {
+          bus.emit('message:sent', result.message);
+        }
+        return result;
       });
-      if (result.ok) {
-        bus.emit('message:sent', result.message);
-      }
-      return result;
     },
     react(messageId, type) {
-      const auth = requireUser();
-      if (!auth.ok) {
-        return auth;
-      }
-      const result = addReaction({
-        messageId,
-        userId: auth.session.userId,
-        type,
+      return guard(() => {
+        const session = requireUser();
+        const result = addReaction({ messageId, userId: session.userId, type });
+        if (result.ok) {
+          bus.emit('reaction:added', { messageId, type });
+        }
+        return result;
       });
-      if (result.ok) {
-        bus.emit('reaction:added', { messageId, type });
-      }
-      return result;
     },
     snapshot() {
       return {
