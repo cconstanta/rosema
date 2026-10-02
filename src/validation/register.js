@@ -2,6 +2,11 @@
  * Правила регистрации Rosemа (Т1–Т5 занятия № 9).
  */
 
+const USERNAME_MIN = 4;
+const USERNAME_MAX = 20;
+const PASSWORD_MIN = 8;
+const PASSWORD_MAX = 20;
+
 const USERNAME_RE = /^[A-Za-z][A-Za-z0-9_]{3,19}$/;
 const HAS_LETTER = /[A-Za-z]/;
 const HAS_DIGIT = /\d/;
@@ -10,10 +15,10 @@ export function validateUsername(username, taken = new Set()) {
   if (typeof username !== 'string' || username.trim() === '') {
     return { ok: false, code: 'USERNAME_REQUIRED', classId: 'EK-4' };
   }
-  if (username.length < 4) {
+  if (username.length < USERNAME_MIN) {
     return { ok: false, code: 'USERNAME_TOO_SHORT', classId: 'EK-2' };
   }
-  if (username.length > 20) {
+  if (username.length > USERNAME_MAX) {
     return { ok: false, code: 'USERNAME_TOO_LONG', classId: 'EK-3' };
   }
   if (!USERNAME_RE.test(username)) {
@@ -29,10 +34,10 @@ export function validatePassword(password) {
   if (typeof password !== 'string' || password === '') {
     return { ok: false, code: 'PASSWORD_REQUIRED', classId: 'EK-10' };
   }
-  if (password.length < 8) {
+  if (password.length < PASSWORD_MIN) {
     return { ok: false, code: 'PASSWORD_TOO_SHORT', classId: 'EK-8' };
   }
-  if (password.length > 20) {
+  if (password.length > PASSWORD_MAX) {
     return { ok: false, code: 'PASSWORD_TOO_LONG', classId: 'EK-9' };
   }
   if (!HAS_LETTER.test(password) || !HAS_DIGIT.test(password)) {
