@@ -1,0 +1,41 @@
+{
+  "url": "http://127.0.0.1:8081/",
+  "viewports": {
+    "desktop": {
+      "width": 1280,
+      "height": 800,
+      "status": 200,
+      "title": "Rosema",
+      "hasCanvas": false,
+      "bodyTextLen": 917,
+      "bodyTextHash": "a9014d2777f79af579a182c9717ab9afb8c844d9d53b1e4976694725bf8b3108",
+      "bodyTextPrefix": "R Rosema ЧАСТНАЯ ПЕРЕПИСКА Роза Егорова Чаты Контакты Практика П",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-built.png"
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "title": "Rosema",
+      "hasCanvas": false,
+      "bodyTextLen": 551,
+      "bodyTextHash": "fff7c4075603c3d6338411b7eb4589c6f9020caad6c532edcf92740ac6de9a07",
+      "bodyTextPrefix": "R Rosema Роза Егорова ПП Практика ПМ.02 3 участника Сегодня Рома",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-built-mobile.png"
+    }
+  },
+  "brandWarnings": [],
+  "authWarnings": [],
+  "verdictFile": "/workspace/screenshots/app-builder-built.json",
+  "divergesFromBaseline": true,
+  "baselineReasons": [
+    "desktop: body text changed (6 -> 917 chars, hash mismatch)",
+    "mobile: body text changed (476 -> 551 chars, hash mismatch)"
+  ]
+}

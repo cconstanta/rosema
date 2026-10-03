@@ -1,0 +1,36 @@
+{
+  "url": "http://127.0.0.1:8080/",
+  "viewports": {
+    "desktop": {
+      "width": 1280,
+      "height": 800,
+      "status": 200,
+      "title": "Rosema",
+      "hasCanvas": false,
+      "bodyTextLen": 6,
+      "bodyTextHash": "3fe2302e9f72cb8966d572f180205afd1c175e57c00d7689aa86c3294b6e5eb6",
+      "bodyTextPrefix": "Rosema",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-preview.png"
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "title": "Rosema",
+      "hasCanvas": false,
+      "bodyTextLen": 476,
+      "bodyTextHash": "8831cd42f0792f588a7d3cafe0b06df638af9fe4fc6c8dda2bfe55252b1976ac",
+      "bodyTextPrefix": "R Rosema Мессенджер, в котором видно, что происходит с сообщение",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-preview-mobile.png"
+    }
+  },
+  "brandWarnings": [],
+  "authWarnings": [],
+  "verdictFile": "/workspace/screenshots/app-builder-preview.json"
+}
