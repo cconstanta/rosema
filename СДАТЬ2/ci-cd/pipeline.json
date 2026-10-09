@@ -1,0 +1,18 @@
+{
+  "pipeline": [
+    {
+      "stage": "build",
+      "source": "./src",
+      "output": "./bin"
+    },
+    {
+      "stage": "test",
+      "tests": "./tests"
+    },
+    {
+      "stage": "deploy",
+      "source": "./bin",
+      "target": "./deploy"
+    }
+  ]
+}
