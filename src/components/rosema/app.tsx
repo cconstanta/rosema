@@ -43,6 +43,7 @@ export function RosemaApp() {
     };
 
     const replay = (event: Event) => {
+      // Правая кнопка открывает меню чата и не должна порождать второй щелчок.
       if ("button" in event && typeof event.button === "number" && event.button !== 0) {
         pressed = null;
         return;
