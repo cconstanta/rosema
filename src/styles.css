@@ -421,6 +421,8 @@
   background-size: cover;
   background-position: center;
 }
+
+[data-wallpaper="none"] .thread-paper {
   background-image: none;
 }
 
